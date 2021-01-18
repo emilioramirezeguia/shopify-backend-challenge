@@ -1,16 +1,27 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
+  findByID,
   add,
   remove,
 };
 
-// add image(s) and return it
-function add(imageURL) {
-  return db("images").insert(imageURL).returning("id");
+// get image(s) by id
+function findByID(id) {
+  return db("image").where({ id }).first();
 }
 
-// find image(s) by id and delete it
+// add image(s) and return image with id
+function add(image) {
+  return db("image")
+    .insert(image)
+    .then((imageID) => {
+      const id = imageID[0];
+      return findByID(id);
+    });
+}
+
+// find image(s) by id(s) and delete it
 function remove(filter) {
-  return db("images").where(filter).orderBy("id");
+  return db("image").where(filter).orderBy("id");
 }
