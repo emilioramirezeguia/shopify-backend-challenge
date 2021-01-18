@@ -1,22 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { PickerOverlay } from "filestack-react";
+import "./App.css";
 
 function App() {
+  const [display, setDisplay] = useState(false);
+  const openPicker = () => {
+    setDisplay(true);
+  };
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>Upload images</p>
+        <button onClick={openPicker}>Click me!</button>
+        {display && (
+          <PickerOverlay apikey={process.env.REACT_APP_FILESTACK_API_KEY} />
+        )}
       </header>
     </div>
   );
