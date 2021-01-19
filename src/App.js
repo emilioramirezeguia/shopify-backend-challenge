@@ -1,5 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
+} from "@material-ui/core";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { PickerOverlay } from "filestack-react";
 import "./App.css";
 
@@ -7,8 +19,8 @@ function App() {
   const [display, setDisplay] = useState(false);
   const [images, setImages] = useState([]);
 
-  const openPicker = () => {
-    setDisplay(true);
+  const togglePicker = () => {
+    setDisplay(!display);
   };
 
   const addImage = (imageURL) => {
@@ -36,28 +48,60 @@ function App() {
         console.log(error);
       });
   };
+
+  const options = {
+    maxFiles: 10,
+    onClose: togglePicker,
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Upload images</p>
-        <button onClick={openPicker}>Click me!</button>
-        {display && (
-          <PickerOverlay
-            apikey={process.env.REACT_APP_FILESTACK_API_KEY}
-            onSuccess={(response) => addImage(response.filesUploaded[0].url)}
-          />
-        )}
+    <Container disableGutters maxWidth={false}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        p={10}
+        bgcolor="info.main"
+      >
+        <h3>Upload images</h3>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<PhotoCameraIcon />}
+          onClick={togglePicker}
+        >
+          Upload
+        </Button>
+      </Box>
+      <Divider light />
+      {display && (
+        <PickerOverlay
+          apikey={process.env.REACT_APP_FILESTACK_API_KEY}
+          onSuccess={(response) => addImage(response.filesUploaded[0].url)}
+          pickerOptions={options}
+        />
+      )}
+      <GridList>
         {images.length > 0 &&
           images.map((image) => {
             return (
-              <div key={image.id}>
+              <GridListTile key={image.id} rows={2}>
                 <img src={image.url} alt="" />
-                <button onClick={() => deleteImage(image.id)}></button>
-              </div>
+                <GridListTileBar
+                  actionIcon={
+                    <IconButton
+                      variant="contained"
+                      color="action"
+                      onClick={() => deleteImage(image.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
             );
           })}
-      </header>
-    </div>
+      </GridList>
+    </Container>
   );
 }
 
