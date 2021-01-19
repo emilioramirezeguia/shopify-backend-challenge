@@ -2,6 +2,18 @@ const router = require("express").Router();
 
 const Images = require("./imagesModel");
 
+// get all images
+router.get("/", (eq, res) => {
+  Images.getAll()
+    .then((images) => {
+      res.status(200).json({ images });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// post an image
 router.post("/", (req, res) => {
   const image = req.body;
 
@@ -14,6 +26,7 @@ router.post("/", (req, res) => {
     });
 });
 
+// delete an image by id
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
 

@@ -1,12 +1,18 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
+  getAll,
   findByID,
   add,
   remove,
 };
 
-// get image(s) by id
+// get all images
+function getAll() {
+  return db("image");
+}
+
+// find image(s) by id
 function findByID(id) {
   return db("image").where({ id }).first();
 }

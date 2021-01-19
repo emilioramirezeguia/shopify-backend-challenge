@@ -42,7 +42,7 @@ function App() {
     axios
       .delete(`http://localhost:5000/images/${imageID}`)
       .then((response) => {
-        console.log(response);
+        setImages(images.filter((image) => imageID !== image.id));
       })
       .catch((error) => {
         console.log(error);
@@ -50,9 +50,9 @@ function App() {
   };
 
   const options = {
-    maxFiles: 10,
     onClose: togglePicker,
   };
+
   return (
     <Container disableGutters maxWidth={false}>
       <Box
@@ -90,7 +90,6 @@ function App() {
                   actionIcon={
                     <IconButton
                       variant="contained"
-                      color="action"
                       onClick={() => deleteImage(image.id)}
                     >
                       <DeleteIcon />
