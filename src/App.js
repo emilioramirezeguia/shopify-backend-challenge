@@ -25,6 +25,17 @@ function App() {
         console.log(error);
       });
   };
+
+  const deleteImage = (imageID) => {
+    axios
+      .delete(`http://localhost:5000/images/${imageID}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="App">
       <header className="App-header">
@@ -41,6 +52,7 @@ function App() {
             return (
               <div key={image.id}>
                 <img src={image.url} alt="" />
+                <button onClick={() => deleteImage(image.id)}></button>
               </div>
             );
           })}

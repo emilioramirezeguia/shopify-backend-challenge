@@ -14,4 +14,12 @@ router.post("/", (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+
+  Images.remove(id).then((response) => {
+    res.status(204).end();
+  });
+});
+
 module.exports = router;

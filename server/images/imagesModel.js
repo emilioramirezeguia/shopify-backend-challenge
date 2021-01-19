@@ -22,6 +22,6 @@ function add(image) {
 }
 
 // find image(s) by id(s) and delete it
-function remove(filter) {
-  return db("image").where(filter).orderBy("id");
+function remove(id) {
+  return db("image").where({ id }).del();
 }
